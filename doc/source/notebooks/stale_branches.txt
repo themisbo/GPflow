@@ -1,0 +1,27 @@
+  awav/elbo-with-data-argument   47bf0ddd [origin/awav/elbo-with-data-argument: gone] SVGP objectives accept single data argument
+  awav/gpflow-2.0                f9c3052f [origin/awav/gpflow-2.0: gone] Improved convolutional GP notebook. (#1061)
+  develop-2.0                    b6cc9532 [origin/develop-2.0: gone] Notebook fixed - broke in earlier PR (#1115)
+  st/Parameter_repr              77ba9017 [origin/st/Parameter_repr: gone] foo
+  st/add_gpflow_slack_invite     0b5e1eff [origin/st/add_gpflow_slack_invite: gone] Update README.md installation instructions
+  st/add_str_and_repr_html       f5ba81ba [origin/st/add_str_and_repr_html: gone] update explicit imports in gpflow/__init__.py
+  st/add_v1.5_doc_link           f7b468be [origin/st/add_v1.5_doc_link: gone] add links to v1.5 documentation to README.md
+  st/bounded_positive_transform  52b7280b [origin/st/bounded_positive_transform: gone] (broken) attempt at getting the printing to work nicely by subclassing tfp.bijectors.Chain ...
+  st/clean_up_kernel_interface   23ffc39e [origin/st/clean_up_kernel_interface: gone] add ABC metaclass to Kernel baseclass
+  st/dynamic_shapes              535573a6 [origin/st/dynamic_shapes: gone] add test for MultiClass likelihood under tf.function
+  st/fix_active_dims_bug         1400d649 [origin/st/fix_active_dims_bug: gone] regression test
+  st/fix_config_dtypes           ab01a413 [origin/st/fix_config_dtypes: gone] Fixes #1080 by casting tensorflow dtypes to numpy dtypes
+  st/fix_kernel_design_notebook  ab3ef15b [origin/st/fix_kernel_design_notebook: gone] remove presliced from Brownian kernel in kernel_design notebook
+  st/fix_linting                 24aa91dc [origin/st/fix_linting: gone] fix docstrings
+  st/improve_multiclass_tests    df2d83d6 [origin/st/improve_multiclass_tests: gone] skip tests more selectively and reduce RobustMax's _squash parameter from 1e-4 to 1e-6 to make log_prob comparison test pass
+  st/jit_scipy                   3f222c26 [origin/st/jit_scipy: gone] add to docstring
+  st/jupytext_conversion         c49e3b44 [origin/st/jupytext_conversion: gone] add pairing for theory/ code notebooks
+  st/link_upgrade_guide          f13cab2a [origin/st/link_upgrade_guide: gone] add link to upgrade guide to README
+  st/models_notebook-2.0         5b0141d4 [origin/st/models_notebook-2.0: gone] add link to convolutional GP notebook to intro.ipynb
+  st/prior_in_print_summary      c5d81a18 [origin/st/prior_in_print_summary: gone] update test_printing expected outputs
+  st/quickfix-1                  bfcb422b [origin/st/quickfix-1: gone] minor fixes
+  st/reinstate_projects          74437fbd [origin/st/reinstate_projects: gone] Merge branch 'develop' of github.com:GPflow/GPflow into st/reinstate_projects
+  st/remove_presliced            1361379e [origin/st/remove_presliced: gone] fix notebook
+  st/scipy_L-BFGS-B_default      7235ac58 [origin/st/scipy_L-BFGS-B_default: gone] fix whitespace
+  st/transform_check             25875a64 [origin/st/transform_check: gone] fix failed test
+  st/update_README-1             8807030c [origin/st/update_README-1: gone] updated following review
+  st/upper_bound-2.0             ab7f8129 [origin/st/upper_bound-2.0: gone] add link to upper_bound notebook to intro.ipynb

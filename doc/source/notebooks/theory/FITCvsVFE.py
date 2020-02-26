@@ -76,19 +76,16 @@ def plotPredictions(ax, model, color, label=None):
 def repeatMinimization(model, xtest, ytest):
     callback = Callback(model, xtest, ytest)
 
-    @tf.function
-    def objective_closure():
-        return - model.log_marginal_likelihood()
-
     opt = gpflow.optimizers.Scipy()
     #print("Optimising for {} repetitions".format(nRepeats))
     for repeatIndex in range(nRepeats):
         #print(repeatIndex)
-        opt.minimize(objective_closure, model.trainable_variables,
+        opt.minimize(model.training_loss, model.trainable_variables,
                      method='L-BFGS-B',
                      tol=1e-11,
                      options=dict(disp=False, maxiter=ci_niter(2000)),
-                     step_callback=callback)
+                     step_callback=callback,
+                     jit=True)
     return callback
 
 def trainSparseModel(xtrain, ytrain, exact_model, isFITC, xtest, ytest):

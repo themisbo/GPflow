@@ -183,11 +183,8 @@ print_summary(m)
 # To optimize your model, first create an instance of an optimizer (in this case, `gpflow.optimizers.Scipy`), which has optional arguments that are passed to `scipy.optimize.minimize` (we minimize the negative log likelihood). Then, call the `minimize` method of that optimizer, with your model as the optimization target. Variables that have priors are maximum a priori (MAP) estimated, that is, we add the log prior to the log likelihood, and otherwise use Maximum Likelihood.
 
 # %%
-def closure(): 
-    return - m.log_marginal_likelihood()
-
 opt = gpflow.optimizers.Scipy()
-opt.minimize(closure, variables=m.trainable_variables)
+opt.minimize(m.training_loss, variables=m.trainable_variables)
 
 # %% [markdown]
 # ## Building new models
@@ -196,7 +193,16 @@ opt.minimize(closure, variables=m.trainable_variables)
 #
 # In this very simple demo, we'll implement linear multiclass classification.
 #
-# There are two parameters: a weight matrix and a bias (offset). The key thing to implement the `log_likelihood` method, which returns a TensorFlow scalar that represents the (log) likelihood. You can use parameter objects inside `log_likelihood`.
+# There are two parameters: a weight matrix and a bias (offset). You can use
+# Parameter objects directly, like any TensorFlow tensor.
+#
+# The training objective depends on the type of model; it may be possible to
+# implement the exact (log)marginal likelihood, or only a lower bound to the
+# log marginal likelihood (ELBO). You can implement this with any name of your
+# choice.  However, you must implement a `training_loss` method, which has to
+# return a TensorFlow scalar that represents the *minimization* objective.
+# Here, we return the negative of the log marginal likelihood and add
+# `self.log_prior()` to enable MAP and MCMC.
 #
 
 # %%
@@ -204,10 +210,10 @@ import tensorflow as tf
 
 class LinearMulticlass(gpflow.models.BayesianModel):
     def __init__(self, X, Y, name=None):
-        super().__init__(name=name) # always call the parent constructor
+        super().__init__(name=name)  # always call the parent constructor
         
-        self.X = X.copy() # X is a NumPy array of inputs
-        self.Y = Y.copy() # Y is a 1-of-k (one-hot) representation of the labels
+        self.X = X.copy()  # X is a NumPy array of inputs
+        self.Y = Y.copy()  # Y is a 1-of-k (one-hot) representation of the labels
         
         self.num_data, self.input_dim = X.shape
         _, self.num_classes = Y.shape
@@ -219,11 +225,14 @@ class LinearMulticlass(gpflow.models.BayesianModel):
         # ^^ You must make the parameters attributes of the class for
         # them to be picked up by the model. i.e. this won't work:
         #
-        # W = gpflow.Param(...    <-- must be self.W
+        # W = gpflow.Parameter(...    <-- must be self.W
     
-    def log_likelihood(self): # takes no arguments
-        p = tf.nn.softmax(tf.matmul(self.X, self.W) + self.b) # Param variables are used as tensorflow arrays. 
-        return tf.reduce_sum(tf.math.log(p) * self.Y) # be sure to return a scalar
+    def training_loss(self):  # takes no arguments
+        return - (self.log_marginal_likelihood() + self.log_prior())
+
+    def log_marginal_likelihood(self):
+        p = tf.nn.softmax(tf.matmul(self.X, self.W) + self.b)  # Parameters can be used like a tf.Tensor
+        return tf.reduce_sum(tf.math.log(p) * self.Y)  # be sure to return a scalar
 
 
 # %% [markdown]
@@ -249,11 +258,8 @@ m
 
 
 # %%
-def closure(): 
-    return - m.log_marginal_likelihood()
-
 opt = gpflow.optimizers.Scipy()
-opt.minimize(closure, variables=m.trainable_variables)
+opt.minimize(m.training_loss, variables=m.trainable_variables)
 
 # %%
 xx, yy = np.mgrid[-4:4:200j, -4:4:200j]

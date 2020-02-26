@@ -103,8 +103,7 @@ rbf_m_log_likelihood = tf.function(rbf_m_log_likelihood)
 # %%
 gpflow.utilities.set_trainable(rbf_m.inducing_variable, False)
 start_time = time.time()
-res = gpflow.optimizers.Scipy().minimize(
-    lambda: -rbf_m_log_likelihood(data),
+res = gpflow.optimizers.Scipy().minimize(rbf_m.training_loss_closure(data),
     variables=rbf_m.trainable_variables,
     method="l-bfgs-b",
     options={"disp": True, "maxiter": MAXITER})
